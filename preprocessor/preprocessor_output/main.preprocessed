@@ -1,22 +1,22 @@
-# 1 "main.cpp"
-# 1 "<built-in>" 1
+# 1 "main.cpp"  初次进入main.cpp
+# 1 "<built-in>" 1 编译器为我们预定义了一些宏，可以通过cpp -dM main.cpp查看，比如 #define __ARM_NEON 1 因为mac m1支持 NEON，#define __clang__ 1 代表编译器为clang，还有很多其他宏
 # 1 "<built-in>" 3
-# 433 "<built-in>" 3
-# 1 "<command line>" 1
-# 1 "<built-in>" 2
-# 1 "main.cpp" 2
-# 1 "./c1.hpp" 1
-# 1 "./c2.hpp" 1
+# 433 "<built-in>" 3 
+# 1 "<command line>" 1 命令行也会定义一些宏，通过-D参数传入
+# 1 "<built-in>" 2 
+# 1 "main.cpp" 2 回到main.cpp
+# 1 "./c1.hpp" 1 遇到了 #include "c1.hpp"
+# 1 "./c2.hpp" 1 在c1.hpp里面遇到了 #include "c2.hpp"，以下是 c2.hpp的内容
 
 int f2(){
     return 0;
 }
-# 2 "./c1.hpp" 2
+# 2 "./c1.hpp" 2 回到 c1.hpp，以下是c1.hpp的内容
 
 int f1(){
     return 0;
 }
-# 2 "main.cpp" 2
+# 2 "main.cpp" 2 回到main.cpp
 
 int main(){
     return 0;
