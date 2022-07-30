@@ -1,3 +1,5 @@
+#pragma once
+
 #include "c2.hpp"
 
 
