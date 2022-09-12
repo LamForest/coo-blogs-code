@@ -9,6 +9,7 @@
 
 int buffer[BUFFER_SIZE];
 int cnt = 0;
+std::atomic<bool> stop{false};
 std::mutex lock;
 
 void sleep(int seconds)
@@ -18,9 +19,8 @@ void sleep(int seconds)
 
 void producer_func()
 {
-    while (1)
+    while (!stop)
     {
-        sleep(1);
         int num = -1;
         {
             std::lock_guard<std::mutex> guard(lock);
@@ -36,7 +36,7 @@ void producer_func()
 
 void consumer_func()
 {
-    while (1)
+    while (!stop)
     {
         sleep(1);
         int num = -1;
@@ -51,17 +51,23 @@ void consumer_func()
     }
 }
 
+void stop_after(int seconds)
+{
+    sleep(seconds);
+    stop = true;
+}
+
 int main()
 {
     std::thread producer(producer_func);
-    std::thread producer1(producer_func);
     std::thread consumer(consumer_func);
 
+    std::thread timer(stop_after, 1);
     //如果生产者, 消费者一同样的速度生产/消费
     //当#生产者 > 消费者时
     //一段时间后, buffer就会满
     //其中一个生产者就会idle
     producer.join();
-    producer1.join();
     consumer.join();
+    timer.join();
 }
