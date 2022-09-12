@@ -6,11 +6,11 @@
 #include <condition_variable>
 
 #define NUM_PRODUCER 1
-#define NUM_CONSUMER 1
+#define NUM_CONSUMER 10
 
 #define BUFFER_SIZE 10
 
-#define TASK = 20 //递归斐波那契数列的参数
+#define TASK 20 //递归斐波那契数列的参数
 
 int buffer[BUFFER_SIZE];
 int cnt = 0;
@@ -48,7 +48,7 @@ void producer_func(int thread_id)
             buffer[cnt++] = num;
         }
         cv_wait_for_task.notify_one(); //在里面在外面? 先释放mutex吗?
-        printf("[%d] : Produce %d\n", thread_id, num);
+        printf("[P%d] : Produce %d\n", thread_id, num);
     }
 }
 
@@ -64,7 +64,7 @@ void consumer_func(int thread_id)
             num = buffer[--cnt];
         }
         cv_wait_for_slot.notify_one();
-        printf("[%d] : Consume %d\n", thread_id, factorial(num));
+        printf("[C%d] : Consume %d\n", thread_id, factorial(num));
     }
 }
 
@@ -77,7 +77,7 @@ void stop_after(int seconds)
 
 int main()
 {
-    std::thread timer(stop_after, 2);
+    std::thread timer(stop_after, 1);
     std::vector<std::thread> producers;
     std::vector<std::thread> consumers;
     for (int i = 0; i < NUM_PRODUCER; ++i)
