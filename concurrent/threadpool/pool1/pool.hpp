@@ -7,7 +7,6 @@
 #include <deque>
 
 #define NUM_WORKERS 10
-#define NUM_TASKS 100
 // TODO Task -> Task*
 // TODO 单独有个调度线程, 用于分配任务
 
@@ -99,18 +98,3 @@ private:
 
     std::condition_variable cv_wait_for_task;
 };
-
-int main()
-{
-    Task task = {
-        1073676287,
-        isPrime}; //没报错吗
-    Pool pool(NUM_WORKERS);
-    pool.start();
-    for (int i = 0; i < NUM_TASKS; ++i)
-    {
-        pool.commit(task);
-    }
-
-    return 0;
-}
