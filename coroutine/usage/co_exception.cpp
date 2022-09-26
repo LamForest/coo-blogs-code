@@ -35,12 +35,17 @@ struct ReturnObject
         如果返回值为suspend_never, 则coroutine不再挂起, 直接结束并销毁.
         如果返回值为suspend_always, 则coroutine 挂起, 由caller决定何时销毁
         */
-        std::experimental::suspend_never final_suspend() noexcept { return {}; }
+        std::experimental::suspend_always final_suspend() noexcept
+        {
+            printf("final_suspend\n");
+            return {};
+        }
 
         void return_void(){};
 
         void unhandled_exception()
         {
+            printf("unhandled_exception\n");
             ex_ptr = std::current_exception();
         }
         suspend_always yield_value(unsigned data)
@@ -109,6 +114,10 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-    if (h)
-        h.destroy();
+
+    auto h2 = std::move(h);
+    h = nullptr;
+    printf("h2.addr = %p, h. addr = %p", h2.address(), h.address());
+    // if (h)
+    //     h.destroy();
 }
